@@ -1,261 +1,47 @@
-== Welcome to Rails
+= Care Network Attendance
 
-Rails is a web-application framework that includes everything needed to create
-database-backed web applications according to the Model-View-Control pattern.
+Care Network Attendance is a Ruby-on-Rails web application designed to take attendance in a distributed fashion for small-group-based churches. The important part is the followup by the small group leaders, and communicating the reason why people were absent. In this way, concerns can be quickly addressed, and people can be helped.
 
-This pattern splits the view (also called the presentation) into "dumb"
-templates that are primarily responsible for inserting pre-built data in between
-HTML tags. The model contains the "smart" domain objects (such as Account,
-Product, Person, Post) that holds all the business logic and knows how to
-persist themselves to a database. The controller handles the incoming requests
-(such as Save New Account, Update Product, Show Post) by manipulating the model
-and directing data to the view.
+    Copyright (C) 2010 David Krider
 
-In Rails, the model is handled by what's called an object-relational mapping
-layer entitled Active Record. This layer allows you to present the data from
-database rows as objects and embellish these data objects with business logic
-methods. You can read more about Active Record in
-link:files/vendor/rails/activerecord/README.html.
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-The controller and view are handled by the Action Pack, which handles both
-layers by its two parts: Action View and Action Controller. These two layers
-are bundled in a single package due to their heavy interdependence. This is
-unlike the relationship between the Active Record and Action Pack that is much
-more separate. Each of these packages can be used independently outside of
-Rails. You can read more about Action Pack in
-link:files/vendor/rails/actionpack/README.html.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-== Getting Started
+== Plugins
+  * wicked_pdf
+  * paperclip
+  * acts_as_tree
+  * will_paginate
 
-1. At the command prompt, create a new Rails application:
-       <tt>rails new myapp</tt> (where <tt>myapp</tt> is the application name)
+== Reminders
 
-2. Change directory to <tt>myapp</tt> and start the web server:
-       <tt>cd myapp; rails server</tt> (run with --help for options)
+There is a job you may want to cron to run periodically. This is a reminder to followup on questionable absences the day after whatever services you wish. (For instance, Monday morning at 10 am.)
 
-3. Go to http://localhost:3000/ and you'll see:
-       "Welcome aboard: You're riding Ruby on Rails!"
+== Theory
 
-4. Follow the guidelines to start developing your application. You can find
-the following resources handy:
+From an application administrator's viewpoint, it's important to understand the shortcut, or assumption, that's buried in this application. When the attendance form is generated for a group on a date, the controller is find_or_creating each attendance to feed back to the app. If this form is simply browsed, but attendance is NOT subsequently taken, there will be an attendance in the database for each person in the group WITH A NULL STATUS. While I don't particularly care for this, I've written around it for the followup job, and, from every angle I can think about it, it should make no difference. Theoretically, if there's a service to take attendance for, everyone should have their attendance taken, and there shouldn't be any "orphans" anyway.
 
-* The Getting Started Guide: http://guides.rubyonrails.org/getting_started.html
-* Ruby on Rails Tutorial Book: http://www.railstutorial.org/
+ However, it still bugs me from a database administrator's point of view, and I've started a branch in git devoted to fixing this situation. Unfortunately, using find_or_initialize has a LOT of interesting implications when taking attendance for a group of people, some of whom might have already had attendance taken. Maybe this is a bug, and I should limit a person's membership to only one group in a network, but, as it stands in my implementation, each group's leader is contained within their group, and the group above them. This has led to the situation I've described, which will break using find_or_initialize. At the time of this writing, I figure I'm half done with the patch, but the trickiest parts are yet to work out. It's in the git repo on the create_or_initialize branch.
 
+I'm just realizing that I could somehow block out the "level 2" groups from having their attendance taken, and eliminate this problem, but it doesn't feel right to do that, since a larger church could wind up having more than just 3 levels. However, however, now that I think about _that_, maybe the theory here is that all the even-level groups should be skipped... Anyway. Thoughts welcome.
 
-== Debugging Rails
+== Future
 
-Sometimes your application goes wrong. Fortunately there are a lot of tools that
-will help you debug it and get it back on the rails.
+	1. There are a few places in the app that work because the Statuses are in order. "Present" has a database id of 1, and the "unexcused" absences start at id > 5. There are a couple thoughts about other ways of going about this. You could just reference a list of static keywords defined somewhere (e.g., STATUSES = ["Present", "Sick, ...]), and/or a boolean could be placed on the model to indicate "excusedness". Right now, I'm sticking with this.
 
-First area to check is the application log files. Have "tail -f" commands
-running on the server.log and development.log. Rails will automatically display
-debugging and runtime information to these files. Debugging info will also be
-shown in the browser on requests from 127.0.0.1.
+	2. In the immediate future, I need to extend the app to capture guest attendance. The report would be inverted. Instead of absences, we'd want to see "presences". This is fine, but the key here is that it must be EASY EASY EASY to add people to the list. A church can't have greeters getting bogged down in the friction of adding someone to the database. There are caveats, of course, people don't like giving out information at the "guest" stage any more, and I can't say I blame them. Still, it needs to be tried.
 
-You can also log your own messages directly into the log file from your code
-using the Ruby logger class from inside your controllers. Example:
+	3. I could really stand to do a load of cleanup on the controllers and DRY out my code. Thinking about it as I write this, I realize some of my reticence for doing this comes from the fact that Rails already requires mucking about in a half dozen files to do any one thing, and I don't want to split my code out to yet another file... That's probably a poor excuse. YMMV.
 
-  class WeblogController < ActionController::Base
-    def destroy
-      @weblog = Weblog.find(params[:id])
-      @weblog.destroy
-      logger.info("#{Time.now} Destroyed Weblog ID ##{@weblog.id}!")
-    end
-  end
-
-The result will be a message in your log file along the lines of:
-
-  Mon Oct 08 14:22:29 +1000 2007 Destroyed Weblog ID #1!
-
-More information on how to use the logger is at http://www.ruby-doc.org/core/
-
-Also, Ruby documentation can be found at http://www.ruby-lang.org/. There are
-several books available online as well:
-
-* Programming Ruby: http://www.ruby-doc.org/docs/ProgrammingRuby/ (Pickaxe)
-* Learn to Program: http://pine.fm/LearnToProgram/ (a beginners guide)
-
-These two books will bring you up to speed on the Ruby language and also on
-programming in general.
-
-
-== Debugger
-
-Debugger support is available through the debugger command when you start your
-Mongrel or WEBrick server with --debugger. This means that you can break out of
-execution at any point in the code, investigate and change the model, and then,
-resume execution! You need to install ruby-debug to run the server in debugging
-mode. With gems, use <tt>sudo gem install ruby-debug</tt>. Example:
-
-  class WeblogController < ActionController::Base
-    def index
-      @posts = Post.all
-      debugger
-    end
-  end
-
-So the controller will accept the action, run the first line, then present you
-with a IRB prompt in the server window. Here you can do things like:
-
-  >> @posts.inspect
-  => "[#<Post:0x14a6be8
-          @attributes={"title"=>nil, "body"=>nil, "id"=>"1"}>,
-       #<Post:0x14a6620
-          @attributes={"title"=>"Rails", "body"=>"Only ten..", "id"=>"2"}>]"
-  >> @posts.first.title = "hello from a debugger"
-  => "hello from a debugger"
-
-...and even better, you can examine how your runtime objects actually work:
-
-  >> f = @posts.first
-  => #<Post:0x13630c4 @attributes={"title"=>nil, "body"=>nil, "id"=>"1"}>
-  >> f.
-  Display all 152 possibilities? (y or n)
-
-Finally, when you're ready to resume execution, you can enter "cont".
-
-
-== Console
-
-The console is a Ruby shell, which allows you to interact with your
-application's domain model. Here you'll have all parts of the application
-configured, just like it is when the application is running. You can inspect
-domain models, change values, and save to the database. Starting the script
-without arguments will launch it in the development environment.
-
-To start the console, run <tt>rails console</tt> from the application
-directory.
-
-Options:
-
-* Passing the <tt>-s, --sandbox</tt> argument will rollback any modifications
-  made to the database.
-* Passing an environment name as an argument will load the corresponding
-  environment. Example: <tt>rails console production</tt>.
-
-To reload your controllers and models after launching the console run
-<tt>reload!</tt>
-
-More information about irb can be found at:
-link:http://www.rubycentral.org/pickaxe/irb.html
-
-
-== dbconsole
-
-You can go to the command line of your database directly through <tt>rails
-dbconsole</tt>. You would be connected to the database with the credentials
-defined in database.yml. Starting the script without arguments will connect you
-to the development database. Passing an argument will connect you to a different
-database, like <tt>rails dbconsole production</tt>. Currently works for MySQL,
-PostgreSQL and SQLite 3.
-
-== Description of Contents
-
-The default directory structure of a generated Ruby on Rails application:
-
-  |-- app
-  |   |-- assets
-  |       |-- images
-  |       |-- javascripts
-  |       `-- stylesheets
-  |   |-- controllers
-  |   |-- helpers
-  |   |-- mailers
-  |   |-- models
-  |   `-- views
-  |       `-- layouts
-  |-- config
-  |   |-- environments
-  |   |-- initializers
-  |   `-- locales
-  |-- db
-  |-- doc
-  |-- lib
-  |   `-- tasks
-  |-- log
-  |-- public
-  |-- script
-  |-- test
-  |   |-- fixtures
-  |   |-- functional
-  |   |-- integration
-  |   |-- performance
-  |   `-- unit
-  |-- tmp
-  |   |-- cache
-  |   |-- pids
-  |   |-- sessions
-  |   `-- sockets
-  `-- vendor
-      |-- assets
-          `-- stylesheets
-      `-- plugins
-
-app
-  Holds all the code that's specific to this particular application.
-
-app/assets
-  Contains subdirectories for images, stylesheets, and JavaScript files.
-
-app/controllers
-  Holds controllers that should be named like weblogs_controller.rb for
-  automated URL mapping. All controllers should descend from
-  ApplicationController which itself descends from ActionController::Base.
-
-app/models
-  Holds models that should be named like post.rb. Models descend from
-  ActiveRecord::Base by default.
-
-app/views
-  Holds the template files for the view that should be named like
-  weblogs/index.html.erb for the WeblogsController#index action. All views use
-  eRuby syntax by default.
-
-app/views/layouts
-  Holds the template files for layouts to be used with views. This models the
-  common header/footer method of wrapping views. In your views, define a layout
-  using the <tt>layout :default</tt> and create a file named default.html.erb.
-  Inside default.html.erb, call <% yield %> to render the view using this
-  layout.
-
-app/helpers
-  Holds view helpers that should be named like weblogs_helper.rb. These are
-  generated for you automatically when using generators for controllers.
-  Helpers can be used to wrap functionality for your views into methods.
-
-config
-  Configuration files for the Rails environment, the routing map, the database,
-  and other dependencies.
-
-db
-  Contains the database schema in schema.rb. db/migrate contains all the
-  sequence of Migrations for your schema.
-
-doc
-  This directory is where your application documentation will be stored when
-  generated using <tt>rake doc:app</tt>
-
-lib
-  Application specific libraries. Basically, any kind of custom code that
-  doesn't belong under controllers, models, or helpers. This directory is in
-  the load path.
-
-public
-  The directory available for the web server. Also contains the dispatchers and the
-  default HTML files. This should be set as the DOCUMENT_ROOT of your web
-  server.
-
-script
-  Helper scripts for automation and generation.
-
-test
-  Unit and functional tests along with fixtures. When using the rails generate
-  command, template test files will be generated for you and placed in this
-  directory.
-
-vendor
-  External libraries that the application depends on. Also includes the plugins
-  subdirectory. If the app has frozen rails, those gems also go here, under
-  vendor/rails/. This directory is in the load path.
+	4. Along the same lines as the previous, I could really stand to write tests for this application. ;-)
