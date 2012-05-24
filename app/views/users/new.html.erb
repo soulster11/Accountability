@@ -1,0 +1,21 @@
+<h2>Create New User</h2>
+
+<% form_for(@user) do |f| %>
+	<%= f.error_messages %>
+	<table>
+		<tr><th><%= f.label :username %><td><%= f.text_field :username %></tr>
+		<tr><th><%= f.label :password %><td><%= password_field_tag :password %></tr>
+		<tr><th><%= f.label :confirm %><td><%= password_field_tag :confirm %></tr>
+		<tr><th><%= f.label :administrator %><td><%= f.check_box :administrator %></tr>
+		<tr><th><%= f.label :person %><td><%= f.collection_select :person_id,
+			Person.all(:order => "last_name, first_name"), :id, :proper_name %></tr>
+	</table>
+	
+	<p style="text-align: center">
+		<%= f.submit 'Create' %>
+	</p>
+<% end %>
+
+<p class="navigation">
+	<%= link_to 'Index', users_path %>
+</p>

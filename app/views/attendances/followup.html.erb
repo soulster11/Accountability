@@ -1,0 +1,26 @@
+<div style="text-align: center">
+
+
+<% form_for :attendance, :url => { :action => 'commit_followup' } do |f| %>
+<%= f.error_messages %>
+
+<!-- FUN! New API that isn't in the standard docs, but does just what's needed. -->
+<p><%= grouped_collection_select(:group, :id, Network.all,
+	:groups, :designation, :id, :designation, :include_blank => true) %></p>
+
+<%= observe_field :group_id, :url => { :action => :change_group_followup },
+  :with => "'&group_id=' + $('group_id').value" %>
+
+<div id="date_followup">
+  <%= render :partial => "date_followup" %>
+</div>
+
+<div id="form_followup">
+<% unless @service.nil? or @group.nil? %>
+	<%= render :partial => "form_followup" %>
+<% end %>
+</div>
+
+<% end %>
+
+</div>

@@ -1,0 +1,26 @@
+<h2>New Group</h2>
+
+<% form_for(@group) do |f| %>
+  <%= f.error_messages %>
+	<table>
+		<tr><th><%= f.label :designation %><td><%= f.text_field :designation %></tr>
+		<tr><th><%= f.label :network %><td><%= collection_select(:group, :network_id,
+			Network.find(:all), :id, :designation,
+			{ :include_blank => 'None' }) %></tr>
+		<tr><th><%= f.label :parent %><td><%= grouped_collection_select(:group, 
+			:parent_id, Network.all, :groups, :designation, :id, :designation,
+			:include_blank => 'None') %></tr>
+		<tr><th><%= f.label :leader %><td><%= collection_select(:group, :leader_id,
+			Person.find(:all, :order => "last_name, first_name"), :id, :proper_name,
+			{ :include_blank => 'None' }) %></tr>
+		<tr><th><%= f.label :position %><td><%= f.text_field :position %></tr>
+	</table>
+
+  <p style="text-align: center">
+    <%= f.submit "Create" %>
+  </p>
+<% end %>
+
+<p class="navigation">
+	<%= link_to 'Index', groups_path %>
+</p>

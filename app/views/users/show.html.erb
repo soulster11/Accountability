@@ -1,0 +1,12 @@
+<h2>Show User</h2>
+
+<table>
+	<tr><th>Username<td><%= @user.username %></tr>
+	<tr><th>Person<td><%= link_to @user.person.full_name, @user.person %></tr>
+	<tr><th>Admin?<td><%= @user.administrator %></tr>
+</table>
+
+<p class="navigation">
+<%= link_to 'Edit', edit_user_path(@user) %> |
+<%= link_to 'Index', users_path %>
+</p>

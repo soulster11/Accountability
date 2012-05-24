@@ -1,0 +1,2 @@
+page.replace_html "form_report", :partial => "form_report"
+page.visual_effect :highlight, "form_report"

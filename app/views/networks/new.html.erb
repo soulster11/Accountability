@@ -1,0 +1,15 @@
+<h2>New Network</h2>
+
+<% form_for(@network) do |f| %>
+	<%= f.error_messages %>
+	<table>
+		<tr><th<%= f.label :designation %><td><%= f.text_field :designation %></tr>
+	</table>
+  <p style="text-align: center">
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<p class="navigation">
+	<%= link_to 'Index', networks_path %>
+</p>

@@ -1,0 +1,38 @@
+<h2>Edit Group</h2>
+
+<% form_for(@group) do |f| %>
+	<%= f.error_messages %>
+	<table>
+		<tr><th><%= f.label :designation %><td><%= f.text_field :designation %></tr>
+		<tr><th><%= f.label :leader %><td><%= collection_select(:group, :leader_id,
+			Person.find(:all, :order => "last_name, first_name"), :id, :proper_name,
+			{ :include_blank => 'None' }) %></tr>
+		<tr><th><%= f.label :parent %><td><%= grouped_collection_select(:group, 
+			:parent_id, Network.all, :groups, :designation, :id, :designation,
+			:include_blank => 'None') %></tr>
+	</table>
+		
+	<p>&nbsp;</p>
+
+	<table>
+		<tr><th>Last Name<th>First Name<th>Member</tr>
+		<% @people.each do |person| %>
+ 		 	<tr>
+				<td><%= person.last_name %>
+				<td><%= person.first_name %>
+				<td style="text-align: center">
+					<%= check_box_tag "group[person_ids][]", person.id, @group.people.include?(person) %>
+			</tr>
+		<% end %>
+	</table>
+
+	<p style="text-align: center">
+		<%= f.submit "Update" %>
+	</p>
+<% end %>
+
+<p class="navigation">
+	<%= link_to 'Show', @group %> |
+	<%= link_to 'Index', groups_path %> |
+	<%= link_to 'Delete', @group, :confirm => 'Are you sure?', :method => :delete %>
+</p>

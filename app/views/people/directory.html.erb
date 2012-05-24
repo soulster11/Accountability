@@ -1,0 +1,21 @@
+<h2>Directory</h2>
+
+<table>
+	<tr><th>Last Name<th>First name<th>Address<th>Phone<th>Dependents</tr>
+
+	<% @heads.each do |person| %>
+		<tr>
+			<td><%= person.last_name %>
+			<td><%= link_to person.first_name, person_path(person) %>
+				<% unless person.spouse.nil? %>
+					&amp; <%= link_to person.spouse.first_name, person.spouse %>
+				<% end %>
+			<td><%= link_to person.residence.full_address, residence_path(person.residence) unless
+				person.residence.nil?%>
+			<td><%= number_to_phone(person.residence.phone_number) unless person.residence.nil? %>
+			<td><%= list_dependents(person) %>
+		</tr>
+	<% end %>
+</table>
+
+<p class="navigation"><%= link_to "PDF Format", :controller => :people, :action => 'directory.pdf' %></p>

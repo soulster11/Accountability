@@ -1,0 +1,22 @@
+<h2>Edit Schedule</h2>
+
+<% form_for(@schedule) do |f| %>
+  <%= f.error_messages %>
+	<table>
+    <tr><th><%= f.label :network_id %><td><%= f.collection_select :network_id,
+			Network.find(:all), :id, :designation %></tr>
+		<tr><th><%= f.label :default_day %><td><%= f.select :default_day, Schedule::DAYS %></tr>
+    <tr><th><%= f.label :default_time %><td><%= f.time_select :standard_time %></tr>
+    <tr><th><%= f.label :description %><td><%= f.text_field :description %></tr>
+	</table>
+
+  <p style="text-align: center">
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<p class="navigation">
+	<%= link_to 'Show', @schedule %> |
+	<%= link_to 'Index', schedules_path %> |
+	<%= link_to 'Delete', @schedule, :confirm => 'Are you sure?', :method => :delete %>
+</p>

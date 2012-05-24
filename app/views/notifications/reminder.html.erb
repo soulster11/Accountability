@@ -1,0 +1,15 @@
+<%= @group.leader.full_name %>,
+
+Your group has absences on <%= @service.printable_date %> that are unaccounted for. Please update the attendance status for them.
+
+<% if @absences.count > 0 %>
+	<% @absences.each do |a| %>
+		<%= a.person.full_name %> - <%= a.status.designation %>
+		<%= a.person.residence.full_address unless a.person.residence.nil? %>
+		<%= a.person.residence.phone_number unless a.person.residence.nil? || a.person.residence.phone_number.nil? %>
+	<% end %>
+<% else %>
+	It appears that attendance wasn't taken for this group at all.
+<% end %>
+
+http://localhost:3000/attendances/followup

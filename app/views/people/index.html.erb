@@ -1,0 +1,36 @@
+<h2>List People</h2>
+
+<table>
+	<col><col><col><col><col><col>
+	<thead>
+		<tr><th>Picture<th>Last Name<th>First Name<th>Type<th>Head of Household<th>Cell Number
+			<th>Email Address</tr>
+	</thead>
+	<tbody>
+  <% @people.each do |person| %>
+  	<tr>
+			<td>
+				<% if person.picture.file? %>
+					<%= image_tag person.picture.url(:thumb) %>
+				<% end %>
+			</td>
+      <td><%= link_to person.last_name, person %></td>
+      <td><%= person.first_name  %></td>
+      <td><%= person.type.designation unless person.type.nil? %></td>
+			<td><%= link_to person.parent.full_name, person.parent unless 
+				person.parent.nil? %></td>
+      <td><%= person.cell_number %></td>
+      <td><%= person.email_address %></td>
+    </tr>
+	<% end %>
+	</tbody>
+</table>
+
+<p class="navigation"><%= page_entries_info @people %></br>
+<%= will_paginate @people %></p>
+
+<p class="navigation">
+<%= link_to 'New', new_person_path %> |
+<%= link_to 'Ungrouped', :controller => :people, :action => 'ungrouped' %> |
+<%= link_to 'Uncontactable', :controller => :people, :action => 'uncontactable' %>
+</p>

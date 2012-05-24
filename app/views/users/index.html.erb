@@ -1,0 +1,19 @@
+<h2>List Users</h2>
+
+<table>
+	<tr><th>Username<th>Person<th>Email<th>Admin?
+  </tr>
+
+<% for user in @users %>
+  <tr>
+  	<td><%= link_to user.username, user %></td>
+		<td><%= link_to user.person.full_name, user.person %></td>
+		<td><%= user.person.email_address %></td>
+		<td><%= user.administrator %></td>
+  </tr>
+<% end %>
+</table>
+
+<p class="navigation">
+<%= link_to 'New user', new_user_path %>
+</p>

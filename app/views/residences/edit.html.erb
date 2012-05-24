@@ -1,0 +1,22 @@
+<h2>Edit Residence</h2>
+
+<% form_for(@residence) do |f| %>
+  <%= f.error_messages %><br/>
+  <table>
+		<tr><th><%= label_tag "address1" %><td><%= f.text_field "address1" %></tr>
+		<tr><th><%= label_tag "address2" %><td><%= f.text_field "address2" %></tr>
+		<tr><th><%= label_tag "city" %><td><%= f.text_field "city" %></tr>
+		<tr><th><%= label_tag "state" %><td><%= f.text_field "state" %></tr>
+		<tr><th><%= label_tag "zip" %><td><%= f.text_field "zip" %></tr>
+		<tr><th><%= label_tag "phone_number" %>:<td><%= f.text_field "phone_number" %></tr>
+  </table>
+  <p style="text-align: center">
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<p class="navigation">
+<%= link_to 'Show', @residence %> |
+<%= link_to 'Listing', residences_path %> |
+<%= link_to 'Delete', @residence, :confirm => 'Are you sure?', :method => :delete %></td>
+</p>

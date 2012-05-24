@@ -1,0 +1,12 @@
+<h2>Show Service</h2>
+
+<table>
+  <tr><th>Network<td><%= @service.network.designation %></th>
+  <tr><th>Date and Time<td><%= @service.printable_date %></tr>
+  <tr><th>Description<td><%= @service.description %></tr>
+</table>
+
+<p class="navigation">
+	<%= link_to 'Edit', edit_service_path(@service) %> |
+	<%= link_to 'Index', services_path %>
+</p>

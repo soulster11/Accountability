@@ -1,0 +1,14 @@
+<h3>Reset password</h3>
+
+<div style="text-align: center">
+<% form_for :user, :url => { :action => 'reset' } do |f| %>
+
+	<p><%= f.label :email_address %>: <br/>
+	<%= f.text_field :email_address, :size => 50 %></p>
+
+<p>
+	<%= f.submit 'Email password' %>
+</p>
+
+<% end %>
+</div>

@@ -1,0 +1,36 @@
+<% content_for :head do %>
+
+	<meta name="viewport" content="height=device-height, width=device-width, initial-scale=1, maximum-scale=2">
+
+<% end %>
+
+<script>
+	function mark_present(id) {
+		$.getJSON(id + "/mark", function(a) {
+			if (a) {
+				$("#" + a.id).remove();
+			}
+		});
+	}
+</script>
+
+<div data-role="header">
+	<h1>Take attendance</h1><%= link_to 'Add', { :controller => 'people', :action => 'mobile' }, :class => "ui-btn-right", "data-icon" => "plus" %>
+</div>
+ 
+<div data-role="content">
+	<div class="content-primary">	
+		<ul data-role="listview" data-filter="true" data-filter-placeholder="Find person...">
+			<% last_initial = "" %>
+    	<% @attendances.each do |attendance| %>
+				<% if last_initial != attendance.person.last_name[0, 1] %>
+					<% last_initial = attendance.person.last_name[0, 1] %>
+					<li data-role="list-divider"><%= last_initial %></li>
+				<% end %>
+				<li id="<%= attendance.id %>">
+				<%= link_to_function attendance.person.full_name, "mark_present(" + attendance.id.to_s + ")" %>
+				</li>
+	    <% end %>
+  	</ul>
+	</div>
+</div>

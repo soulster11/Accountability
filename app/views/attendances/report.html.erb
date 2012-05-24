@@ -1,0 +1,19 @@
+<div style="text-align: center;">
+
+	<p><%= select(:network, :id, Network.all.collect { |n|
+		[n.designation, n.id] }) %></p>
+
+<%= observe_field :network_id, :url => { :action => :change_group_report },
+ :with => "'network_id=' + $('network_id').value" %>
+
+<div id="date_report">
+  <%= render :partial => "date_report" %>
+</div>
+
+<div id="form_report">
+  <% unless @attendances.nil? || @attendances.empty? %>
+    <%= render :partial => "form_report" %>
+  <% end %>
+</div>
+
+</div>

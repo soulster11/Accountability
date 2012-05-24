@@ -1,0 +1,13 @@
+<h2>Show Schedule</h2>
+
+<table>
+  <tr><th>Network<td><%= @schedule.network.designation %></th>
+  <tr><th>Default Day<td><%= @schedule.default_day %></tr>
+  <tr><th>Standard Time<td><%= @schedule.printable_time %></tr>
+  <tr><th>Description<td><%= @schedule.description %></tr>
+</table>
+
+<p class="navigation">
+	<%= link_to 'Edit', edit_schedule_path(@schedule) %> |
+	<%= link_to 'Index', schedules_path %>
+</p>

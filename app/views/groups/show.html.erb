@@ -1,0 +1,16 @@
+<h2>Show Group</h2>
+
+<table>
+	<tr><th>Group<td><%= @group.designation %></tr>
+	<tr><th>Leader<td><%= @group.leader.full_name unless @group.leader.nil? %></tr>
+	<tr><th>Members<td>
+		<% @members.each do |person| %>
+			<%= person.proper_name %><br/>
+		<% end %>
+	</tr>
+</table>
+
+<p class="navigation">
+	<%= link_to 'Edit', edit_group_path(@group) %> |
+	<%= link_to 'Index', groups_path %>
+</p>

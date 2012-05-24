@@ -1,0 +1,26 @@
+<h2>List Residences</h2>
+
+<table>
+  <tr><th>Address 1<th>Address 2<th>City<th>State<th>Zip Code<th>Phone Number
+	  <th>People</tr>
+
+<% counter = 0 %>
+<% @residences.each do |residence| %>
+  <tr>
+		<td><%= link_to residence.address1, residence %>
+		<td><%= residence.address2 %>
+		<td><%= residence.city %>
+		<td><%= residence.state %>
+		<td><%= residence.zip %>
+		<td><%= number_to_phone(residence.phone_number) %>
+		<td><%= residence.people.collect { |p| link_to p.full_name, p }.to_sentence %>
+  </tr>
+<% end %>
+</table>
+
+<p class="navigation"><%= page_entries_info @residences %></br>
+<%= will_paginate @residences %></p>
+
+<p class="navigation">
+<%= link_to 'New residence', new_residence_path %>
+</p>

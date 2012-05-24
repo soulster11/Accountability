@@ -1,0 +1,19 @@
+<h2>List Services</h2>
+
+<table>
+	<tr><th>Service Time and Date<th>Network<th>Description</tr>
+	<% @services.each do |service| %>
+		<tr>
+			<td><%= link_to service.printable_date, service %>
+			<td><%= service.network.designation %>
+			<td><%= service.description %>
+		</tr>
+	<% end %>
+</table>
+
+<p class="navigation"><%= page_entries_info @services %></br>
+<%= will_paginate @services %></p>
+
+<p class="navigation">
+	<%= link_to 'New', new_service_path %>
+</p>

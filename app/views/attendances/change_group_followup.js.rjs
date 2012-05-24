@@ -1,0 +1,5 @@
+page.replace_html "date_followup", :partial => "date_followup"
+page.visual_effect :highlight, "date_followup"
+
+page.replace_html "form_followup", :partial => "form_followup"
+page.visual_effect :highlight, "form_followup"

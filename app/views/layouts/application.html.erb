@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= LOCAL['church_name'] %> Accountability</title>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+	<%= stylesheet_link_tag    "http://fonts.googleapis.com/css?family=Ubuntu" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+	<%= yield :head %>
+</head>
+<body>
+
+<div id="header">
+	<h1><%= LOCAL["church_name"] %> Attendance</h1>
+	<p class="right_navigation">
+		<%= link_to 'Take', :controller => 'attendances', :action => 'take' %>
+		| <%= link_to 'Palms', :controller => 'attendances', :action => 'old' %>
+		| <%= link_to 'Mobile', :controller => 'attendances', :action => 'mobile' %>
+		| <%= link_to 'Followup', :controller => 'attendances', :action => 'followup' %>
+    | <%= link_to 'Report', :controller => 'attendances', :action => 'report' %>
+		| <%= link_to "Directory", :controller => 'people', :action => 'directory' %></p>
+</div>
+
+<p class="flash"><%= flash[:notice] %></p>
+
+<div data-role="page">
+	<%= yield %>
+</div>
+
+<div id="footer">
+<% if session[:admin] %>
+	<p class="navigation"><%= link_to "People", :people %>
+	| <%= link_to "History", :controller => 'attendances', :action => 'history' %>
+	| <%= link_to "Networks", :networks %>
+	| <%= link_to "Groups", :groups %>
+	| <%= link_to "Schedules", :schedules %>
+	| <%= link_to "Services", :services %>
+	| <%= link_to "Residences", :residences %>
+	| <%= link_to "Users", :users %></p>
+<% end %>
+<% if session[:username] %>
+	<p class="navigation"><%= link_to "Logout", :controller => "users", :action => "logout" %>
+	| <%= link_to "Change", :controller => "users", :action => "change" %></p>
+<% else %>
+	<p class="navigation"><%= link_to "Login", :controller => "users", :action => "login" %></p>
+<% end %>
+<p class="right_navigation">Copyright &copy; 2010, <a href="mailto:david@davidkrider.com">David Krider</a><br/>
+Licensed under the GPLv3</p>
+</div>
+
+</body>
+</html>

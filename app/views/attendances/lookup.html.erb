@@ -1,0 +1,50 @@
+<h2>History for <%= @person.full_name %></h2>
+
+<% @person.groups.map { |g| g.network }.each do |network| %>
+	<% # This is a REALLY rough way of doing this, but it will work, for us, for now. %>
+	<% network_absences_wed = @absences.select { |a| a.service.network == network &&
+	 	a.service.dateandtime.wday == 3 } %>
+	<% network_attendances_wed = @attendances.select { |a| a.service.network == network &&
+	 a.service.dateandtime.wday == 3 } %>
+	<% network_absences_sun = @absences.select { |a| a.service.network == network &&
+	 	a.service.dateandtime.wday == 0 } %>
+	<% network_attendances_sun = @attendances.select { |a| a.service.network == network &&
+	 a.service.dateandtime.wday == 0 } %>
+
+	<h3><%= network.designation %>, Wednesday</h3>
+
+	<table>
+		<tr><th>Service<th>Excuse<th>Note</tr>
+		<% network_absences_wed.each do |absence| %>
+			<tr><td><%= absence.service.printable_date %><td><%= absence.status.designation %>
+				<td><%= absence.note %></tr>
+		<% end %>
+	</table>
+
+	<h3><%= network.designation %>, Sunday</h3>
+
+	<table>
+		<tr><th>Service<th>Excuse<th>Note</tr>
+		<% network_absences_sun.each do |absence| %>
+			<tr><td><%= absence.service.printable_date %><td><%= absence.status.designation %>
+				<td><%= absence.note %></tr>
+		<% end %>
+	</table>
+
+	<% possible_wed = @services.select { |s| s.network == network && s.dateandtime.wday == 3 }.count %>
+	<% possible_sun = @services.select { |s| s.network == network && s.dateandtime.wday == 0 }.count %>
+	<h3>Wednesday</h3>
+	<h4><%= network_absences_wed.count %> absences in <%= network_attendances_wed.count %> services 
+		accounted for (<%= sprintf("%0.2f%% attendance", 100 - (network_absences_wed.count.to_f / 
+		network_attendances_wed.count.to_f) * 100) %>)<br/>
+		out of <%= possible_wed %> in the time range (<%= sprintf("%0.2f%% on the roll",
+		(network_attendances_wed.count.to_f / possible_wed) * 100) %>)</h4>
+	<h3>Sunday</h3>
+	<h4><%= network_absences_sun.count %> absences in <%= network_attendances_sun.count %> services 
+		accounted for (<%= sprintf("%0.2f%% attendance", 100 - (network_absences_sun.count.to_f / 
+		network_attendances_sun.count.to_f) * 100) %>)<br/>
+		out of <%= possible_sun %> in the time range (<%= sprintf("%0.2f%% on the roll",
+		(network_attendances_sun.count.to_f / possible_sun) * 100) %>)</h4>
+	<p>&nbsp;</p>
+
+<% end %>

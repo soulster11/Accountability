@@ -1,0 +1,27 @@
+<h2><%= @group.designation %></h2>
+
+<h2><%= @service.printable_date %></h2>
+
+<% form_for :attendance, :url => { :action => 'register' } do |f| %>
+
+	<p>
+	<table>
+		<tr><th>Person<th>Status</tr>
+			<% @attendances.sort! { |x, y| x.person.last_name <=> y.person.last_name } %>
+			<% @attendances.each do |status| %>
+				<% fields_for "attendance[]", status do |attendance_fields| %>
+					<tr>
+						<td><%= status.person.proper_name %>
+						<td><%= attendance_fields.collection_select(:status_id, Status.all, :id, :designation,
+							{ :selected => status.status_id.to_i }) %>
+					</tr>
+				<% end %>
+			<% end %>
+	</table>
+	</p>
+
+	<p style="text-align: center">
+		<%= submit_tag "Register" %>
+	</p>
+
+<% end %>

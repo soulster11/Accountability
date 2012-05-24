@@ -1,0 +1,14 @@
+<% form_tag 'lookup' do -%>
+
+<table>
+	<tr><th><%= label_tag :person %><td><%= collection_select :person, :id,
+		Person.all(:order => 'last_name, first_name'), :id, :proper_name %></tr>
+	<tr><th><%= label_tag :start %><td><%= date_select :service, :start %></tr>
+	<tr><th><%= label_tag :end %><td><%= date_select :service, :end %></tr>
+</table>
+
+<p class="navigation">
+	<%= submit_tag "Lookup" %>
+</p>
+
+<% end -%>

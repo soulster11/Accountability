@@ -1,0 +1,16 @@
+<h2>Show Network</h2>
+
+<table>
+	<tr><th>Designation<td><%= @network.designation %></tr>
+	<tr><th>Groups
+		<td>
+			<% @network.groups.sort { |a, b| a.position <=> b.position }.each do |group| %>
+				<%= link_to group.designation, group %><br/>
+      <% end %>
+		</tr>
+</table>
+
+<p class="navigation">
+	<%= link_to 'Edit', edit_network_path(@network) %> |
+	<%= link_to 'Index', networks_path %>
+</p>

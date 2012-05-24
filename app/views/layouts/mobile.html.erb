@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <title><%= LOCAL['church_name'] %> Attendance</title>
+  <%= stylesheet_link_tag 'mobile' %>
+  <%= javascript_include_tag :defaults %>
+  <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+
+
+<div id="header">
+	<p class="navigation">
+		<%= link_to 'Take', :controller => 'attendances', :action => 'take' %>
+		| <%= link_to 'Palms', :controller => 'attendances', :action => 'old' %>
+		| <%= link_to 'Followup', :controller => 'attendances', :action => 'followup' %>
+    | <%= link_to 'Report', :controller => 'attendances', :action => 'report' %>
+	</p>
+</div>
+
+<p class="flash"><%= flash[:notice] %></p>
+
+<%= yield  %>
+
+<div id="footer">
+<% if session[:admin] %>
+	<p class="navigation"><%= link_to "People", :people %>
+	| <%= link_to "History", :controller => 'attendances', :action => 'history' %>
+	| <%= link_to "Networks", :networks %>
+	| <%= link_to "Groups", :groups %>
+	| <%= link_to "Services", :services %>
+	| <%= link_to "Residences", :residences %>
+	| <%= link_to "Users", :users %></p>
+<% end %>
+<% if session[:username] %>
+	<p class="navigation"><%= link_to "Logout", :controller => "users", :action => "logout" %>
+	| <%= link_to "Change", :controller => "users", :action => "change" %></p>
+<% else %>
+	<p class="navigation"><%= link_to "Login", :controller => "users", :action => "login" %></p>
+<% end %>
+<p class="navigation">Copyright &copy; 2010, <a href="mailto:david@davidkrider.com">David Krider</a><br/>
+Licensed under the GPLv3</p>
+</div>
+
+</body>
+</html>

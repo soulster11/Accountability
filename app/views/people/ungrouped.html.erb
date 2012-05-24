@@ -1,0 +1,10 @@
+<h2>Ungrouped People</h2>
+
+<table>
+	<tr><th>Full Name</tr>
+	<% @ungrouped.each do |person| %>
+		<tr><td><%= link_to person.full_name, person %></tr>
+	<% end %>
+</table>
+
+<p>&nbsp;</p>

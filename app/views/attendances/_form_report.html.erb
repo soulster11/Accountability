@@ -1,0 +1,25 @@
+<p>
+<table>
+  <tr>
+    <th><%= sort_link 'Person', "person.last_name" %>
+    <th><%= sort_link 'Group', "person.primary_group.designation" %>
+    <th><%= sort_link 'Status', "status.id" %>
+    <th>Contacted
+    <th>Note
+  </tr>
+  <% @attendances.each do |attendance| %>
+    <tr>
+      <td><%= attendance.person.proper_name %>
+      <td><%= attendance.person.primary_group.designation unless
+				attendance.person.groups.empty? %>
+			<td class="<%= colorize(attendance.status.id) %>">
+				<%= attendance.status.designation %>
+      <td><%= check_box_tag :attendance, :contacted, attendance.contacted,
+				{ :disabled => true } %>
+      <td class="note"><%= attendance.note %>
+    </tr>
+  <% end %>
+</table>
+</p>
+
+<p>&nbsp;</p>

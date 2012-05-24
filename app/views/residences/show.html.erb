@@ -1,0 +1,17 @@
+<h2>Show Residence</h2>
+
+<table>
+<tr><th>Address 1:<td><%= @residence.address1 %></tr>
+<tr><th>Address 2:<td><%= @residence.address2 unless @residence.address2.nil? %></tr>
+<tr><th>City:<td><%= @residence.city %></tr>
+<tr><th>State:<td><%= @residence.state %></tr>
+<tr><th>Zip:<td><%= @residence.zip %></tr>
+<tr><th>Phone Number:<td><%= @residence.phone_number %></tr>
+</table>
+
+<p class="navigation">
+<%= link_to 'New', new_residence_path %> |
+<%= link_to 'Edit', edit_residence_path(@residence) %> |
+<%= link_to 'Listing', residences_path %>
+</p>
+

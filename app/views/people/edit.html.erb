@@ -1,0 +1,33 @@
+<h2>Edit Person</h2>
+
+<% form_for @person, :html => { :multipart => true } do |f| %>
+	<%= f.error_messages %><br/>
+	<table>
+		<tr><th><%= f.label :last_name %><td><%= f.text_field :last_name %></tr>
+		<tr><th><%= f.label :first_name %><td><%= f.text_field :first_name %></tr>
+		<tr><th><%= f.label :active %><td><%= f.check_box :active %></tr>
+		<tr><th><%= f.label :residence %><td><%= f.select :residence_id, @residences.collect {
+			|r| [ r.full_address, r.id ] }, {:include_blank => 'None'} %></tr>
+		<tr><th><%= f.label :type %><td><%= f.select :type_id,
+			Type.all.collect { |t| [ t.designation, t.id ] }, { :include_blank => 'None' } %></tr>
+		<tr><th><%= f.label :head %><td><%= f.select :parent_id, @heads.collect {
+			|h| [ "#{h.last_name}, #{h.first_name}", h.id ] }, {:include_blank => 'None'} %></tr>
+		<tr><th><%= f.label :email_address %><td><%= f.text_field :email_address, :size => 30 %></tr>
+		<tr><th><%= f.label :cell_number %><td><%= f.text_field :cell_number, :size => 30 %></tr>
+		<tr><th><%= f.label :group_ids, "Groups" %><td><%= select_tag "person[group_ids]",
+		 	options_from_collection_for_select(Group.all, :id, :designation, @person.group_ids),
+			{ :multiple => true, :size => 6, :include_blank => true } %>
+			<tr><th><%= f.label :picture %><td><%= f.file_field :picture %>
+				<%= check_box_tag 'delete_picture' %> Delete</tr>
+	</table>
+	<p style="text-align: center">
+		<%= f.submit 'Update' %>
+	</p>
+<% end %>
+
+<p class="navigation">
+	<%= link_to 'Show', @person %> |
+	<%= link_to 'Index', people_path %> |
+	<%= link_to 'Delete', @person, :confirm => 'Are you sure?', :method => :delete %>
+</p>
+

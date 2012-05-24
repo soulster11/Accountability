@@ -1,0 +1,25 @@
+<h2>New Person</h2>
+
+<%= form_for(@person) do |f| %>
+	<table>
+		<tr><th><%= f.label :last_name %><td><%= f.text_field :last_name %></tr>
+		<tr><th><%= f.label :first_name %><td><%= f.text_field :first_name %></tr>
+		<tr><th><%= f.label :residence %><td><%= f.select :residence_id, @residences.collect {
+			|r| [ r.full_address, r.id ] }, {:include_blank => 'None'} %></tr>
+		<tr><th><%= f.label :type %><td><%= f.select :type_id,
+			Type.all.collect { |t| [ t.designation, t.id ] }, { :include_blank => 'None' } %></tr>
+		<tr><th><%= f.label :head %><td><%= f.select :parent_id, @heads.collect {
+			|h| [ "#{h.last_name}, #{h.first_name}", h.id ] }, {:include_blank => 'None'} %></tr>
+		<tr><th><%= f.label :group_ids, "Groups" %><td><%= select_tag "person[group_ids]",
+			options_from_collection_for_select(Group.all(:order => 'designation'), :id,
+			:designation, @person.group_ids),
+			{ :multiple => true, :size => 6, :include_blank => true } %>
+	</table>
+	<p style="text-align: center">
+		<%= f.submit 'Create' %>
+	</p>
+<% end %>
+
+<p class="navigation">
+	<%= link_to 'Index', people_path %>
+</p>

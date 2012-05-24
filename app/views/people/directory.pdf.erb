@@ -1,0 +1,42 @@
+<% limit = 55 %>
+<% counter = 0 %>
+<% page = 0 %>
+
+<% @heads.each do |person| %>
+
+	<% if counter % limit == 0 || counter == 0 %>
+
+		<% page += 1 %>
+
+		<% if counter % limit == 0 && counter != 0 %>
+			</table>
+			<p class="footer">&nbsp;</p>
+		<% end %>
+
+		<h1><%= LOCAL['church_name'] %> Directory</h1>
+		<table>
+			<tr><th style="width: 12%">Last Name<th style="width: 15%">First name<th style="width: 35%">Address<th style="width: 10%">Phone<th style="width: 28%">Dependents</tr>
+	<% end %>
+
+	<tr>
+	<td><%= person.last_name %>
+		<td><%= person.first_name %>
+			<% unless person.spouse.nil? %>
+				& <%= person.spouse.first_name %>
+			<% end %>
+			<td>
+			<% unless person.residence.nil? %>
+				<%= person.residence.address1 %><%= ", #{person.residence.address2}" unless person.residence.address2.nil? %>
+				<%= ", #{person.residence.city}, #{person.residence.state}, #{person.residence.zip}" %>
+			<% end %>
+		<td style="text-align: center"><%= number_to_phone(person.residence.phone_number) unless person.residence.nil? || person.residence.phone_number.nil? %>
+		<td><%= print_dependents(person) %>
+	</tr>
+
+	<% counter += 1 %>
+	
+<% end %>
+
+</table>
+
+<p>&nbsp;</p>

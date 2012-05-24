@@ -1,0 +1,21 @@
+<div style="text-align: center">
+
+<%= form_for :attendance, :url => { :action => 'choose' } do |f| %>
+
+<!-- FUN! New API that isn't in the standard docs, but does just what's needed. -->
+<p><%= grouped_collection_select(:group, :id, Network.all,
+	:groups, :designation, :id, :designation) %></p>
+
+<p><%= select(:service, :id, Service.find(:all,
+	:conditions => "DATE(dateandtime) <= '#{Date.today.strftime('%y-%m-%d')}'",
+	:limit => 10, :order => "dateandtime DESC").collect { |s| [s.printable_date, s.id] }) %>
+</p>
+
+<p style="text-align: center" >
+	<%= f.submit 'Choose' %>
+</p>
+
+<% end %>
+
+</div>
+

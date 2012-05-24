@@ -1,0 +1,30 @@
+<h2>Show Person</h2>
+
+<table>
+	<tr><th>Last Name<td><%= @person.last_name %></tr>
+	<tr><th>First Name<td><%= @person.first_name %></tr>
+	<tr><th>Active?<td><%= @person.active? ? "Yes" : "No" %></tr>
+	<tr><th>Residence<td><%= @person.residence.full_address unless @person.residence.nil? %></tr>
+	<tr><th>Email Address<td><%= @person.email_address %></tr>
+	<tr><th>Cell Number<td><%= @person.cell_number %></tr>
+	<tr><th>Type<td><%= @person.type.designation unless @person.type.nil? %></tr>
+	<tr><th>Head<td><%= @person.parent.full_name unless @person.parent.nil? %></tr>
+	<tr><th>Groups<td>
+		<% @person.groups.each do |g| %>
+			<%= g.designation %><br/>
+		<% end %>
+	</tr>
+	<tr><th>Picture<td>
+		<% if @person.picture.file? %>
+			<%= image_tag @person.picture.url %>
+		<% end %>
+	</tr>
+
+</table>
+
+<p class="navigation">
+<%= link_to 'New', new_person_path %> |
+<%= link_to 'Edit', edit_person_path(@person) %> |
+<%= link_to 'Listing', people_path %>
+</p>
+

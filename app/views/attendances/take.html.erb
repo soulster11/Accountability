@@ -1,0 +1,40 @@
+<script>
+	jQuery(function($) {
+
+		$("#group_id").change(function() {
+			$.get("change_group_take", { group_id : $(this).val() }, function(result) {
+					$("#date_id").html("");
+					$.each(result, function(i, o){
+							$("<option>" + o + "</option>").appendTo("#date_id");
+					}); 
+			});
+		});
+		
+		$("#service_id").change(function() {
+			$.get("change_date_take", { group_id : $("#group_id").val(),
+				service_id : $(this).val() }, function(result) {
+				
+			});
+		});
+
+	});
+</script>
+
+<div style="text-align: center">
+
+<%= form_for :attendance, :url => { :action => 'commit_take' } do |f| %>
+
+<!-- FUN! New API that isn't in the standard docs, but does just what's needed. -->
+<p><%= grouped_collection_select(:group, :id, Network.all,
+	:groups, :designation, :id, :designation, :include_blank => true) %></p>
+
+  <%= render :partial => "date_take" %>
+
+<% unless @service.nil? or @group.nil? %>
+	<%= render :partial => "form_take" %>
+<% end %>
+</div>
+
+<% end %>
+
+</div>

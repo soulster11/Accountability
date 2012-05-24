@@ -1,0 +1,19 @@
+<h3>Login</h3>
+
+<div style="text-align: center">
+<%= form_for :user, :url => { :action => 'login' } do |f| %>
+
+	<p><%= f.label :username %><br/>
+	<%= f.text_field :username, :size => 20 %></p>
+
+	<p><%= f.label :password %><br/>
+	<%= f.password_field :password, :size => 20 %></p>
+
+<p>
+	<%= f.submit "Submit" %>
+</p>
+
+<p><%= link_to 'Reset Password', :action => 'reset' %></p>
+
+<% end %>
+</div>

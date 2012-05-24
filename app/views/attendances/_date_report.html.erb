@@ -1,0 +1,5 @@
+<p><%= select(:service, :id, @services.collect { |s| [s.printable_date,
+	s.id] }, { :include_blank => true }) %></p>
+
+<%= observe_field :service_id, :url => { :action => :change_date_report },
+  :with => "'&network_id=' + $('network_id').value + '&service_id=' + $('service_id').value" %>

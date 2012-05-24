@@ -1,0 +1,20 @@
+<h3>Change password</h3>
+
+<div style="text-align: center">
+<% form_for :user, :url => { :action => 'change' } do |f| %>
+
+	<p><%= f.label :password, "Old password" %><br/>
+	<%= f.password_field :password, :size => 20, :value => "" %></p>
+	
+	<p><%= f.label :new_password %><br/>
+	<%= f.password_field :new_password, :size => 20, :value => "" %></p>
+
+	<p><%= f.label :password_confirmation %>: <br/>
+	<%= f.password_field :password_confirmation, :size => 20, :value => "" %></p>
+
+<p>
+	<%= f.submit "Submit" %>
+</p>
+
+<% end %>
+</div>
