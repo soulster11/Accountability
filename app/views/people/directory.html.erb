@@ -13,9 +13,9 @@
 			<td><%= link_to person.residence.full_address, residence_path(person.residence) unless
 				person.residence.nil?%>
 			<td><%= number_to_phone(person.residence.phone_number) unless person.residence.nil? %>
-			<td><%= list_dependents(person) %>
+			<td><%= raw list_dependents(person) %>
 		</tr>
 	<% end %>
 </table>
 
-<p class="navigation"><%= link_to "PDF Format", :controller => :people, :action => 'directory.pdf' %></p>
+<p class="navigation"><%= link_to 'PDF Format', 'directory.pdf' %></p>

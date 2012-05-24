@@ -1,7 +1,6 @@
 <h2>New Service</h2>
 
 <% form_for(@service) do |f| %>
-  <%= f.error_messages %>
   <table>
     <tr><th><%= f.label :network_id %><td><%= collection_select(:service, :network_id,
 			Network.find(:all), :id, :designation) %></tr>

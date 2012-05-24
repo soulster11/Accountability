@@ -91,6 +91,7 @@ Accountability::Application.routes.draw do
 			get 'mark'
 		end
 	end
+	match 'attendances/get_services/:group_id', :controller => 'attendances', :action => 'get_services'
 
 	resources :users
 

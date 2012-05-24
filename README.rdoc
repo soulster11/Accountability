@@ -1,8 +1,8 @@
-= Care Network Attendance
+= Accountability
 
-Care Network Attendance is a Ruby-on-Rails web application designed to take attendance in a distributed fashion for small-group-based churches. The important part is the followup by the small group leaders, and communicating the reason why people were absent. In this way, concerns can be quickly addressed, and people can be helped.
+Accountability is a Ruby-on-Rails web application designed to take attendance in a distributed fashion for small-group-based churches. The important part is the followup by the small group leaders, and communicating the reason why people were absent. In this way, concerns can be quickly addressed, and people can be helped.
 
-    Copyright (C) 2010 David Krider
+    Copyright (C) 2012 David Krider
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

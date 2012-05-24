@@ -1,7 +1,6 @@
 <h2>Edit User</h2>
 
 <% form_for(@user) do |f| %>
-  <%= f.error_messages %>
 	<table>
 		<tr><th><%= f.label :username %><td><%= f.text_field :username %></tr>
 		<tr><th><%= f.label :person %><td><%= f.collection_select :person_id,

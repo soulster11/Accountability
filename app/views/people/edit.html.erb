@@ -1,7 +1,6 @@
 <h2>Edit Person</h2>
 
 <% form_for @person, :html => { :multipart => true } do |f| %>
-	<%= f.error_messages %><br/>
 	<table>
 		<tr><th><%= f.label :last_name %><td><%= f.text_field :last_name %></tr>
 		<tr><th><%= f.label :first_name %><td><%= f.text_field :first_name %></tr>

@@ -2,26 +2,28 @@ class AttendancesController < ApplicationController
 
 	def index
 		@attendances = Attendance.find(:all, :limit => 100)
-		#@attendances = Attendance.find(:all, :conditions => "service_id >= 230")
+
 		respond_to do |format|
 			format.html # index.html.erb
-			format.xml	{ render :xml => @attendances }
+			format.json	{ render :json => @attendances }
 		end
 	end
 
 	def show
 		@attendance = Attendance.find(params[:id])
+
 		respond_to do |format|
 			format.html # show.html.erb
-			format.xml	{ render :xml => @attendance }
+			format.json	{ render :json => @attendance }
 		end
 	end
 
 	def new
 		@attendance = Attendance.new
+
 		respond_to do |format|
 			format.html # new.html.erb
-			format.xml	{ render :xml => @attendance }
+			format.json	{ render :json => @attendance }
 		end
 	end
 
@@ -31,38 +33,39 @@ class AttendancesController < ApplicationController
 
 	def create
 		@attendance = Attendance.new(params[:attendance])
+		
 		respond_to do |format|
-			if @attendance.save
-				flash[:notice] = 'Attendance was successfully created.'
-				format.html { redirect_to(@attendance) }
-				format.xml	{ render :xml => @attendance, :status => :created, :location => @attendance }
-			else
-				format.html { render :action => "new" }
-				format.xml	{ render :xml => @attendance.errors, :status => :unprocessable_entity }
-			end
-		end
+      if @attendance.save
+        format.html { redirect_to @attendance, :notice => 'Project was successfully created.' }
+        format.json { render :json => @attendance, :status => :created, :location => @attendance }
+      else
+        format.html { render :action => "new" }
+        format.json { render :json => @attendance.errors, :status => :unprocessable_entity }
+      end
+    end
 	end
 
 	def update
 		@attendance = Attendance.find(params[:id])
+
 		respond_to do |format|
-			if @attendance.update_attributes(params[:attendance])
-				flash[:notice] = 'Attendance was successfully updated.'
-				format.html { redirect_to(@attendance) }
-				format.xml	{ head :ok }
-			else
-				format.html { render :action => "edit" }
-				format.xml	{ render :xml => @attendance.errors, :status => :unprocessable_entity }
-			end
-		end
+      if @attendance.update_attributes(params[:attendance])
+        format.html { redirect_to @attendance, :notice => 'Project was successfully updated.' }
+        format.json { head :no_content }
+      else
+        format.html { render :action => "edit" }
+        format.json { render :json => @attendance.errors, :status => :unprocessable_entity }
+      end
+    end
 	end
 
 	def destroy
 		@attendance = Attendance.find(params[:id])
 		@attendance.destroy
+
 		respond_to do |format|
-			format.html { redirect_to(attendances_url) }
-			format.xml	{ head :ok }
+			format.html { redirect_to attendances_url }
+			format.json	{ head :no_content }
 		end
 	end
 	
@@ -222,6 +225,13 @@ class AttendancesController < ApplicationController
 		end
 	end
 
+	def get_services
+		@group = Group.find(params[:group_id])
+		@services = Service.find_all_by_network_id(@group.network.id,
+			:conditions => "DATE(dateandtime) <= '#{Date.today.strftime('%y-%m-%d')}'",
+			:limit => 10, :order => "dateandtime DESC")
+	end
+
 	def change_group_followup
 		@group = Group.find(params[:group_id])
 		session[:group_id] = @group.id
@@ -317,7 +327,7 @@ class AttendancesController < ApplicationController
 		@attendances = @attendances.select { |a| a.status != Status.find_by_designation('Present') }
 		respond_to do |format|
 			format.html # index.html.erb
-			format.xml { render :xml => @attendances, :dasherize => false }
+			format.json { render :json => @attendances, :dasherize => false }
 		end
 	end
 

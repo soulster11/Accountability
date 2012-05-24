@@ -1,7 +1,6 @@
 <h2>New Residence</h2>
 
 <% form_for(@residence) do |f| %>
-  <%= f.error_messages %>
 	<table>
 		<tr><th><%= label_tag 'address1' %><td><%= f.text_field :address1 %></tr>
 		<tr><th><%= label_tag 'address2' %><td><%= f.text_field :address2 %></tr>

@@ -1,7 +1,6 @@
 <h2>New Group</h2>
 
 <% form_for(@group) do |f| %>
-  <%= f.error_messages %>
 	<table>
 		<tr><th><%= f.label :designation %><td><%= f.text_field :designation %></tr>
 		<tr><th><%= f.label :network %><td><%= collection_select(:group, :network_id,

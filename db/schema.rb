@@ -13,8 +13,8 @@
 ActiveRecord::Schema.define(:version => 20120521220241) do
 
   create_table "attendances", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
     t.integer  "service_id"
     t.integer  "person_id"
     t.integer  "status_id",  :default => 8
@@ -27,8 +27,8 @@ ActiveRecord::Schema.define(:version => 20120521220241) do
   add_index "attendances", ["status_id"], :name => "index_attendances_on_status_id"
 
   create_table "groups", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
     t.string   "designation"
     t.integer  "leader_id"
     t.integer  "parent_id"
@@ -37,21 +37,21 @@ ActiveRecord::Schema.define(:version => 20120521220241) do
   end
 
   create_table "memberships", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
     t.integer  "person_id"
     t.integer  "group_id"
   end
 
   create_table "networks", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
     t.string   "designation"
   end
 
   create_table "people", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
     t.string   "first_name"
     t.string   "last_name"
     t.integer  "type_id"
@@ -68,8 +68,8 @@ ActiveRecord::Schema.define(:version => 20120521220241) do
   end
 
   create_table "residences", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
     t.string   "address1"
     t.string   "address2"
     t.string   "city",         :default => "Columbus"
@@ -79,8 +79,8 @@ ActiveRecord::Schema.define(:version => 20120521220241) do
   end
 
   create_table "schedules", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
     t.datetime "standard_time"
     t.string   "default_day"
     t.integer  "network_id"
@@ -88,8 +88,8 @@ ActiveRecord::Schema.define(:version => 20120521220241) do
   end
 
   create_table "services", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
     t.datetime "dateandtime"
     t.text     "description"
     t.integer  "network_id"
@@ -104,8 +104,8 @@ ActiveRecord::Schema.define(:version => 20120521220241) do
   end
 
   create_table "users", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
     t.string   "username"
     t.string   "password"
     t.integer  "person_id"

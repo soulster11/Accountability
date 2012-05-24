@@ -1,25 +1,61 @@
+<script>
+
+	$(document).ready(function() {
+		groups = $("#group_id");
+		groups.change(function() {
+			$.post('get_services', function(data) {
+  	    $("#services").html(data);
+	    });
+		});
+
+		// You'd use $.live() here if we didn't have it already
+		services = $("#service_id");
+		services.change(function() {
+			$.post('get_attendances', function(data) {
+  	    $("#attendances").html(data);
+	    });
+		});
+	});
+
+</script>
+
 <div style="text-align: center">
 
+	<%= form_tag '/attendances', :url => { :action => 'commit_followup' } do |f| %>
 
-<% form_for :attendance, :url => { :action => 'commit_followup' } do |f| %>
-<%= f.error_messages %>
+		<div id="groups">
+			<p><%= grouped_collection_select(:group, :id, Network.all,
+				:groups, :designation, :id, :designation, :include_blank => true) %></p>
+		</div>
 
-<!-- FUN! New API that isn't in the standard docs, but does just what's needed. -->
-<p><%= grouped_collection_select(:group, :id, Network.all,
-	:groups, :designation, :id, :designation, :include_blank => true) %></p>
+		<div id="services">
+			<p><%= select(:service, :id, @services.collect { |s| [s.printable_date, s.id] },
+				{ :include_blank => true }) %></p>
+		</div>
 
-<%= observe_field :group_id, :url => { :action => :change_group_followup },
-  :with => "'&group_id=' + $('group_id').value" %>
+		<% unless @service.nil? or @group.nil? %>
+		<div id="attendances">
+			<p>
+				<table>
+					<tr><th>Person<th>Status<th>Contacted?<th>Note</tr>
+						<% @attendances.sort! { |x, y| x.person.last_name <=> y.person.last_name } %>
+						<% @attendances.each do |status| %>
+							<% fields_for "attendance[]", status do |attendance_fields| %>
+								<tr>
+									<td><%= status.person.proper_name %>
+									<td><%= attendance_fields.collection_select(:status_id, Status.all, :id, :designation,
+										{ :selected => status.status_id.to_i }) %>
+									<td><%= attendance_fields.check_box :contacted %>
+									<td><%= attendance_fields.text_field :note, :size => 30 %>
+								</tr>
+							<% end %>
+						<% end %>
+				</table>
+			</p>
+		</div>
 
-<div id="date_followup">
-  <%= render :partial => "date_followup" %>
-</div>
-
-<div id="form_followup">
-<% unless @service.nil? or @group.nil? %>
-	<%= render :partial => "form_followup" %>
-<% end %>
-</div>
+		<p><%= submit_tag "Followup" %></p>
+	<% end %>
 
 <% end %>
 

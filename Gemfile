@@ -45,3 +45,7 @@ git 'git://github.com/parasew/acts_as_tree.git' do
 end
 
 gem 'paperclip', '~> 2.0'
+
+gem 'will_paginate', '~> 3.0'
+
+gem 'wicked_pdf'

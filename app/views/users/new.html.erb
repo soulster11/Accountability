@@ -1,7 +1,6 @@
 <h2>Create New User</h2>
 
 <% form_for(@user) do |f| %>
-	<%= f.error_messages %>
 	<table>
 		<tr><th><%= f.label :username %><td><%= f.text_field :username %></tr>
 		<tr><th><%= f.label :password %><td><%= password_field_tag :password %></tr>
