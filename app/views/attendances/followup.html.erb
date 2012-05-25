@@ -3,7 +3,8 @@
 	$(document).ready(function() {
 		groups = $("#group_id");
 		groups.change(function() {
-			$.post('get_services', function(data) {
+			var group = $("select#group_id :selected").val();
+			$.post('get_services/' + group, function(data) {
   	    $("#services").html(data);
 	    });
 		});
@@ -29,8 +30,7 @@
 		</div>
 
 		<div id="services">
-			<p><%= select(:service, :id, @services.collect { |s| [s.printable_date, s.id] },
-				{ :include_blank => true }) %></p>
+			<%= render :partial => 'services' %>
 		</div>
 
 		<% unless @service.nil? or @group.nil? %>

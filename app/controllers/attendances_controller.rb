@@ -230,6 +230,7 @@ class AttendancesController < ApplicationController
 		@services = Service.find_all_by_network_id(@group.network.id,
 			:conditions => "DATE(dateandtime) <= '#{Date.today.strftime('%y-%m-%d')}'",
 			:limit => 10, :order => "dateandtime DESC")
+		#render :partial => "services", :locals => { :services => @services }
 	end
 
 	def change_group_followup

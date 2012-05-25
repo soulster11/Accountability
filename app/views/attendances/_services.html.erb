@@ -1,0 +1,1 @@
+<p><%= select(:service, :id, @services.collect { |s| [s.printable_date, s.id] }, { :include_blank => true }) %></p>

@@ -1,0 +1,4 @@
+$("#services").toggle();
+$("#services").fadeIn();
+console.log(<%= escape_javascript(render :partial => 'services') %>);
+$("#services").html(<%= escape_javascript(render :partial => 'services') %>);
