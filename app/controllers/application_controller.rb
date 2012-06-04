@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-	#layout :detect_browser
+	layout :detect_browser
 
 	# Never getting called. Fix the (supposed) problem, or take out?
 	def sort_order(default)

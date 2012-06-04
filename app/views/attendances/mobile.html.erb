@@ -1,35 +1,54 @@
-<% content_for :head do %>
-
-	<meta name="viewport" content="height=device-height, width=device-width, initial-scale=1, maximum-scale=2">
-
-<% end %>
+<% content_for :head do %><% end %>
 
 <script>
+	var last_mark;
 	function mark_present(id) {
 		$.getJSON(id + "/mark", function(a) {
 			if (a) {
-				$("#" + a.id).remove();
+				// I don't understand why this selector returns an array.
+				last_mark = $("#" + a.id)[0];
+				$("#" + a.id).hide('slow', function() { $("#" + a.id).remove(); });
 			}
 		});
 	}
+	function unmark_present(id) {
+		if (last_mark) {
+			$.getJSON(last_mark.id + "/unmark", function(a) {
+				if (a) {
+				}
+			});
+					var found = false;
+					$("li.ui-btn").each(function(index) {
+						if (this.id > last_mark.id && found == false ) {
+							found = true;
+							$(last_mark).insertBefore(this);
+							$(last_mark).show();
+						}
+					});
+		}
+		last_mark = null;
+	}
 </script>
 
-<div data-role="header">
-	<h1>Take attendance</h1><%= link_to 'Add', { :controller => 'people', :action => 'mobile' }, :class => "ui-btn-right", "data-icon" => "plus" %>
+<div data-role="header" data-position="fixed">
+	<%= link_to_function 'Undo', "unmark_present()", :class => "ui-btn-left", "data-icon" => "back" %>
+	<h1>Attendance</h1>
+	<%= link_to 'Add', { :controller => 'people', :action => 'mobile' }, :class => "ui-btn-right", "data-icon" => "plus" %>
 </div>
  
 <div data-role="content">
 	<div class="content-primary">	
 		<ul data-role="listview" data-filter="true" data-filter-placeholder="Find person...">
+			<!-- <ul data-role="listview"> -->
 			<% last_initial = "" %>
     	<% @attendances.each do |attendance| %>
 				<% if last_initial != attendance.person.last_name[0, 1] %>
 					<% last_initial = attendance.person.last_name[0, 1] %>
 					<li data-role="list-divider"><%= last_initial %></li>
 				<% end %>
-				<li id="<%= attendance.id %>">
-				<%= link_to_function attendance.person.full_name, "mark_present(" + attendance.id.to_s + ")" %>
-				</li>
+				<% unless attendance.status_id == 1 %>
+					<li id="<%= attendance.id %>"><%= link_to_function attendance.person.proper_name, "mark_present(" + attendance.id.to_s + ")" %></li>
+				<% end %>
 	    <% end %>
   	</ul>
 	</div>

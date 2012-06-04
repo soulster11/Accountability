@@ -307,27 +307,27 @@ class AttendancesController < ApplicationController
 
 	def mobile
 		@network = Network.find(1) # Default to the whole church
-		@services = Service.find_all_by_network_id(@network.id,
+		@service = Service.find_by_network_id(@network.id,
 			:conditions => "DATE(dateandtime) <= '#{Date.today.strftime('%y-%m-%d')}'",
-			:limit => 10, :order => "dateandtime DESC")
-		@service = @services.first
-		@attendances = Array.new()
+			:limit => 1, :order => "dateandtime DESC")
+		@attendances = []
 		people = []
 		@network.groups.each do |group|
 			group.people.each do |person|
 				people << person
 			end
 		end
-		# Should this be useless? Shouldn't people be in only one group per network?
+		# Leaders are in their group as well as the group above them. Should this stop?
 		people.uniq!
 		people.sort! { |a, b| a.last_name <=> b.last_name }
 		people.each do |person|
-			@attendances << Attendance.find_or_create_by_person_id_and_service_id(person.id, @service.id,
-				:include => [ :person, :status ])
+			# Could do a `.where("status_id <> 1")', but this is going to create a "blank"
+			# object for the person for this date, since it should be finding something that it
+			# shouldn't. I'll just hide the "presents" in the view.
+			@attendances << Attendance.find_or_create_by_person_id_and_service_id(person.id, @service.id)
 		end
-		@attendances = @attendances.select { |a| a.status != Status.find_by_designation('Present') }
 		respond_to do |format|
-			format.html # index.html.erb
+			format.html { render :layout => 'mobile' }
 			format.json { render :json => @attendances, :dasherize => false }
 		end
 	end
@@ -340,6 +340,17 @@ class AttendancesController < ApplicationController
 				flash[:notice] = 'Attendance was successfully marked.'
 			end
 			format.json { render :json => @attendance }
+		end
+	end
+
+	def unmark
+		@attendance = Attendance.includes(:person).find(params[:id])
+		@attendance.status = Status.find_by_designation('Unknown')
+		respond_to do |format|
+			if @attendance.save
+				flash[:notice] = 'Attendance was successfully marked.'
+			end
+			format.json { render :json => @attendance.to_json(:include => :person) }
 		end
 	end
 

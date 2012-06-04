@@ -88,7 +88,7 @@ Accountability::Application.routes.draw do
 	match 'attendances/change_date_take', :controller => 'attendances', :action => 'change_date_take'
 	resources :attendances do
 		member do
-			get 'mark'
+			get 'mark', 'unmark'
 		end
 	end
 	match 'attendances/get_services/:group_id', :controller => 'attendances', :action => 'get_services'
